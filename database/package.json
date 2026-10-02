@@ -1,0 +1,17 @@
+{
+  "name": "garment-erp-database",
+  "version": "1.0.0",
+  "description": "Skema, fungsi/trigger, dan seed PostgreSQL untuk Garment ERP",
+  "main": "import_to_aiven.js",
+  "scripts": {
+    "import": "node import_to_aiven.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "pg": "^8.23.1"
+  }
+}
