@@ -8,3 +8,6 @@ coverage/
 !.env.example
 _archive/
 .vercel/
+
+.vercel
+.env*

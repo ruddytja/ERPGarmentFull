@@ -9,7 +9,9 @@ import { authenticate, createSession, randomToken, sha256, signAccessToken } fro
 export const authRouter = express.Router();
 
 const RESET_SECRET = process.env.JWT_SECRET ? process.env.JWT_SECRET + ':reset' : crypto.randomBytes(32).toString('hex');
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+// Di Vercel frontend & backend berada di satu domain; lokal frontend Vite di :3000
+const PUBLIC_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : null;
+const FRONTEND_URL = process.env.FRONTEND_URL || PUBLIC_URL || 'http://localhost:3000';
 
 const LOGIN_STATUS: Record<string, number> = { BAD_CREDENTIALS: 401, ACCOUNT_LOCKED: 423, ACCOUNT_INACTIVE: 403, GOOGLE_NOT_REGISTERED: 403, OPERATOR_INVALID: 401, BAD_PIN: 401 };
 
@@ -137,7 +139,7 @@ authRouter.post('/reset-password', ah(async (req, res) => {
 const google = {
   id: process.env.GOOGLE_CLIENT_ID,
   secret: process.env.GOOGLE_CLIENT_SECRET,
-  redirect: process.env.GOOGLE_REDIRECT_URI || 'http://localhost:4000/api/v1/auth/google/callback',
+  redirect: process.env.GOOGLE_REDIRECT_URI || `${PUBLIC_URL ?? 'http://localhost:4000'}/api/v1/auth/google/callback`,
 };
 
 authRouter.get('/google', (_req, res) => {
