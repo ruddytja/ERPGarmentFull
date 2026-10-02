@@ -22,3 +22,11 @@ export function startJobs() {
     console.log(`[jobs] ${job.name} setiap ${Math.round(job.intervalMs / 1000)} dtk`);
   }
 }
+
+// Jalankan satu job sekali (dipakai endpoint cron di lingkungan serverless/Vercel)
+export async function runJob(name: string) {
+  const job = jobs.find((j) => j.name === name);
+  if (!job) return undefined;
+  return { result: await job.run() };
+}
+export const jobNames = () => jobs.map((j) => j.name);
